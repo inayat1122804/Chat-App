@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const ENDPOINT = "http://localhost:3000";
+const ENDPOINT = "https://chat-app-e0nj.onrender.com";
 let socketInstance = null;
 
 export const getSocketInstance = (userInfo) => {
