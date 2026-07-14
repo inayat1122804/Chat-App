@@ -1,0 +1,39 @@
+const jwt = require("jsonwebtoken");
+const User = require("../models/UserModel");
+
+const protect = async (req, res, next) => {
+  // Get the token user is passing
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(decoded.id).select("-password");
+      next();
+    } catch (error) {
+      res.status(401).json({ message: "NOt authorized, token failed" });
+    }
+  }
+  if (!token) {
+    res.status(401).json({ message: "NOt authorized, token found" });
+  }
+};
+
+const isAdmin = async (req, res, next) => {
+  try {
+    if (req.user && req.user.isAdmin) {
+      next();
+    } else {
+      res.status(403).json({ message: "NOt authorized admin only" });
+    }
+  } catch (error) {
+    res.status(401).json({ message: "NOt authorized, token not found" });
+  }
+};
+
+module.exports = { protect, isAdmin };
