@@ -103,7 +103,7 @@ const ChatArea = ({ selectedGroup, socket }) => {
     const token = currentUser?.token;
     try {
       const { data } = await axios.get(
-        `http://localhost:3000/api/messages/${selectedGroup?._id}`,
+        `https://chat-app-e0nj.onrender.com/api/messages/${selectedGroup?._id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -126,7 +126,7 @@ const ChatArea = ({ selectedGroup, socket }) => {
     try {
       const token = currentUser.token;
       const { data } = await axios.post(
-        "http://localhost:3000/api/messages",
+        "https://chat-app-e0nj.onrender.com/api/messages",
         {
           content: newMessage,
           groupId: selectedGroup?._id,
